@@ -61,8 +61,7 @@ public class LabBanco {
         Caja nuevaCaja = new Caja(ID, cantDinero, tipoTrans);
 
         if (buscarCaja(ID) == null) {
-            if (ptrCaja == null)
-                ptrCaja = nuevaCaja;
+            if (ptrCaja == null) ptrCaja = nuevaCaja;
             else {
                 Caja temp = ptrCaja.getLink();
                 Caja ant = ptrCaja;
@@ -71,8 +70,7 @@ public class LabBanco {
                     temp = temp.getLink();
                 }
 
-                if (temp == null)
-                    ant.setLink(nuevaCaja);
+                if (temp == null) ant.setLink(nuevaCaja);
             }
         } else
             showError(who, "ERROR", "Ya existe una caja con el mismo código: " + ID);
@@ -157,8 +155,7 @@ public class LabBanco {
     static Caja buscarCaja(String ID) {
         Caja temp = ptrCaja;
         while (temp != null) {
-            if (temp.getID().equals(ID))
-                return temp;
+            if (temp.getID().equals(ID)) return temp;
             temp = temp.getLink();
         }
         return null;
