@@ -16,6 +16,7 @@ public class LabBanco {
     public static Caja ptrCaja;        // Primer elemento de la lista de cajas.
 
     /**
+     * Obtener el primer elemento de la lista de Cajas.
      *
      * @return
      */
@@ -193,20 +194,17 @@ public class LabBanco {
     }
 
     /**
-     * 
+     *
      * @param ventana
      * @param ventanaCaja
-     * @param ID 
+     * @param ID
      */
-    public static void viewCaja(JFrame ventana, JFrame ventanaCaja,String ID) {
+    public static void viewCaja(JFrame ventana, JFrame ventanaCaja, String ID) {
         Caja temp = buscarCaja(ID);
-        
+
         // Abrir ventana de Caja y cerrar la principal
         ventana.setVisible(false);
         ventanaCaja.setVisible(true);
-        
-        
-        
-        
+
     }
 }

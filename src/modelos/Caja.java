@@ -27,15 +27,19 @@ public class Caja {
      * @return El número de clientes en la caja.
      */
     public int contarClientes() {
-        Cliente temp = ptrCliente;
-        int n = 0;
+        try {
+            Cliente temp = ptrCliente;
+            int n = 0;
 
-        while (temp.getrLink() != null) {
-            n++;
-            temp = temp.getrLink();
+            while (temp.getrLink() != null) {
+                n++;
+                temp = temp.getrLink();
+            }
+
+            return n;
+        } catch (Exception e) {
+            return 0;
         }
-
-        return n;
     }
 
     /**
