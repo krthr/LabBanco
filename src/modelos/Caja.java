@@ -2,24 +2,24 @@ package modelos;
 
 public class Caja {
 
-    private String ID; // ID de la caja
-    private long cantDinero; // Cantidad de dinero inicial de la caja
-    private String tipoTrans; // Tipo de transacción que se hará en la caja
-    private Caja link; // Enlace de la caja
-    private Cliente ptrCliente; // PTR de la lista de clientes de la caja
+    private String ID;          // ID de la caja.
+    private long cantDinero;    // Cantidad de dinero inicial de la caja.
+    private String tipoTrans;   // Tipo de transacción que se hará en la caja.
+    private Caja link;          // Enlace de la caja.
+    private Cliente ptrCliente; // PTR de la lista de clientes de la caja.
 
     /**
-     * 
+     *
      * @param ID
      * @param cantDinero
-     * @param tipoTrans 
+     * @param tipoTrans
      */
     public Caja(String ID, long cantDinero, String tipoTrans) {
         this.ID = ID;
         this.cantDinero = cantDinero;
         this.tipoTrans = tipoTrans;
     }
-    
+
     /**
      * Contar el número de clientes que están en la lista de clientes (falta por
      * atender).

@@ -459,13 +459,13 @@ public class vistaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void añadirClienteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_añadirClienteBtnActionPerformed
-        if (LabBanco.getPtrCaja() == null)
+        if (LabBanco.getPtrCaja() == null) {
             LabBanco.showError(this, "ERROR", "No ha agregado cajas a la lista.");
-        else {
+        } else {
             this.setVisible(false);
             ventanaAñadirCliente.setVisible(true);
         }
@@ -473,28 +473,30 @@ public class vistaPrincipal extends javax.swing.JFrame {
 
     /**
      * Añadir nueva caja.
-     * @param evt 
+     *
+     * @param evt
      */
     private void guardarCajaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarCajaBtnActionPerformed
         if (idText.getText().length() > 0) {
             LabBanco.agregarCaja(this, idText.getText(), selTipoTrans.getSelectedItem().toString(), Integer.parseInt(cantDinero.getValue() + ""));
             LabBanco.updateCajaTable(cajasTable);
-            
+
             LabBanco.showMessage(this, "Caja agregada con éxito.");
-            
+
             this.setVisible(true);
             ventanaAñadirCaa.setVisible(false);
-            
+
             idText.setText("");
             cantDinero.setValue(0);
             selTipoTrans.setSelectedIndex(0);
-        } else
+        } else {
             LabBanco.showError(this, "ERROR", "Por favor, escriba el ID de la caja.");
+        }
     }//GEN-LAST:event_guardarCajaBtnActionPerformed
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void añadirCajaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_añadirCajaBtnActionPerformed
         this.setVisible(false);
@@ -502,14 +504,15 @@ public class vistaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_añadirCajaBtnActionPerformed
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void verCajaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verCajaBtnActionPerformed
         if (cajasTable.getSelectedRow() != -1) {
-            
-        } else
+
+        } else {
             LabBanco.showError(this, "ERROR", "No ha seleccionado ninguna caja.");
+        }
     }//GEN-LAST:event_verCajaBtnActionPerformed
 
     private void eliminarCajaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarCajaBtnActionPerformed
@@ -518,10 +521,10 @@ public class vistaPrincipal extends javax.swing.JFrame {
 
     private void guardarCajaBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarCajaBtn1ActionPerformed
         LabBanco.agregarCliente(this, idTextCliente.getText(), selTipoTrans1.getSelectedItem().toString());
-        
+
         this.setVisible(true);
         ventanaAñadirCliente.setVisible(false);
-        
+
         idTextCliente.setText("");
         selTipoTrans1.setSelectedIndex(0);
     }//GEN-LAST:event_guardarCajaBtn1ActionPerformed

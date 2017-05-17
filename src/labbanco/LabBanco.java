@@ -41,11 +41,33 @@ public class LabBanco {
      * Eliminar una caja dado su identificador. Para eliminarla se debe revisar
      * que no tenga clientes por atender.
      *
+     * @param ventana
      * @param ID Identificador de la caja a eliminar.
      */
-    static public void eliminarCaja(String ID) {
+    static public void eliminarCaja(JFrame ventana, String ID) {
         Caja temp = ptrCaja.getLink();
         Caja ant = ptrCaja;
+
+        if (buscarCaja(ID) != null) {
+            boolean encontrado = false;
+            while (temp != null && !encontrado) {
+                if (temp.getID().equals(ID)) {
+                    encontrado = true;
+                }
+
+                ant = temp;
+                temp = temp.getLink();
+            }
+
+            if (encontrado) {
+                ant.setLink(ant.getLink());
+                ant.getLink().setLink(null);
+
+                showMessage(ventana, "Caja " + ID + " eliminada correctamente.");
+            }
+        } else {
+            showError(ventana, "ERROR", "No existe la caja con el ID: " + ID);
+        }
     }
 
     /**
@@ -61,8 +83,9 @@ public class LabBanco {
         Caja nuevaCaja = new Caja(ID, cantDinero, tipoTrans);
 
         if (buscarCaja(ID) == null) {
-            if (ptrCaja == null) ptrCaja = nuevaCaja;
-            else {
+            if (ptrCaja == null) {
+                ptrCaja = nuevaCaja;
+            } else {
                 Caja temp = ptrCaja.getLink();
                 Caja ant = ptrCaja;
                 while (temp != null) {
@@ -70,10 +93,13 @@ public class LabBanco {
                     temp = temp.getLink();
                 }
 
-                if (temp == null) ant.setLink(nuevaCaja);
+                if (temp == null) {
+                    ant.setLink(nuevaCaja);
+                }
             }
-        } else
+        } else {
             showError(who, "ERROR", "Ya existe una caja con el mismo código: " + ID);
+        }
     }
 
     /**
@@ -86,22 +112,24 @@ public class LabBanco {
     static public void agregarCliente(JFrame ventana, String ID, String tipoTrans) {
         Caja menClientes = null;
         Caja temp = ptrCaja;
-        
+
         while (temp != null) {
-            if (temp.getTipoTrans().equals(tipoTrans) && menClientes == null)
+            if (temp.getTipoTrans().equals(tipoTrans) && menClientes == null) {
                 menClientes = temp;
-            else {
-                if (temp.getTipoTrans().equals(tipoTrans) && temp.contarClientes() < menClientes.contarClientes())
+            } else {
+                if (temp.getTipoTrans().equals(tipoTrans) && temp.contarClientes() < menClientes.contarClientes()) {
                     menClientes = temp;
+                }
             }
             temp = temp.getLink();
         }
-        
+
         if (menClientes != null) {
             menClientes.agregarCliente(new Cliente(ID, tipoTrans));
             showError(ventana, "¡Éxito!", "Cliente agregado con éxito. Caja: " + menClientes.getID());
-        } else
+        } else {
             showError(ventana, "ERROR", "No hay cajas disponibles con tidpo de transacción: " + tipoTrans);
+        }
     }
 
     /**
@@ -114,7 +142,7 @@ public class LabBanco {
     static public void showError(JFrame Ventana, String title, String message) {
         showMessageDialog(Ventana, message, title, JOptionPane.ERROR_MESSAGE);
     }
-    
+
     /**
      * Mostrar ventana de información.
      *
@@ -148,14 +176,17 @@ public class LabBanco {
     }
 
     /**
-     * Buscar caja de acuerdo a  un ID dado.
+     * Buscar caja de acuerdo a un ID dado.
+     *
      * @param ID
      * @return true: si existe. false: si no existe.
      */
     static Caja buscarCaja(String ID) {
         Caja temp = ptrCaja;
         while (temp != null) {
-            if (temp.getID().equals(ID)) return temp;
+            if (temp.getID().equals(ID)) {
+                return temp;
+            }
             temp = temp.getLink();
         }
         return null;
