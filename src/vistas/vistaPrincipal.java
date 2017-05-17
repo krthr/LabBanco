@@ -1,6 +1,7 @@
 package vistas;
 
 import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
 import labbanco.LabBanco;
 
 public class vistaPrincipal extends javax.swing.JFrame {
@@ -509,7 +510,8 @@ public class vistaPrincipal extends javax.swing.JFrame {
      */
     private void verCajaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verCajaBtnActionPerformed
         if (cajasTable.getSelectedRow() != -1) {
-
+            DefaultTableModel modelo = (DefaultTableModel) cajasTable.getModel();
+            LabBanco.viewCaja(this, ventanaVerCaja,modelo.getValueAt(cajasTable.getSelectedRow(), 0).toString());
         } else {
             LabBanco.showError(this, "ERROR", "No ha seleccionado ninguna caja.");
         }

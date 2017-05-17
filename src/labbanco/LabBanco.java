@@ -191,4 +191,22 @@ public class LabBanco {
         }
         return null;
     }
+
+    /**
+     * 
+     * @param ventana
+     * @param ventanaCaja
+     * @param ID 
+     */
+    public static void viewCaja(JFrame ventana, JFrame ventanaCaja,String ID) {
+        Caja temp = buscarCaja(ID);
+        
+        // Abrir ventana de Caja y cerrar la principal
+        ventana.setVisible(false);
+        ventanaCaja.setVisible(true);
+        
+        
+        
+        
+    }
 }
