@@ -1,26 +1,25 @@
 package labbanco;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 import static javax.swing.JOptionPane.showMessageDialog;
-import javax.swing.JTable;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
-import modelos.Caja;
-import modelos.Cliente;
+import modelos.*;
 import vistas.*;
 
 public class LabBanco {
 
     public static Caja ptrCaja;        // Primer elemento de la lista de cajas.
 
+    public static Caja getPtrCaja() {
+        return ptrCaja;
+    }
+
     /**
      * Obtener el primer elemento de la lista de Cajas.
      *
      * @return
      */
-    public static Caja getPtrCaja() {
+    public static Caja PtrCaja() {
         return ptrCaja;
     }
 
@@ -46,29 +45,25 @@ public class LabBanco {
      * @param ID Identificador de la caja a eliminar.
      */
     static public void eliminarCaja(JFrame ventana, String ID) {
-        Caja temp = ptrCaja.getLink();
+        Caja temp = ptrCaja.Link();
         Caja ant = ptrCaja;
 
         if (buscarCaja(ID) != null) {
             boolean encontrado = false;
             while (temp != null && !encontrado) {
-                if (temp.getID().equals(ID)) {
-                    encontrado = true;
-                }
+                if (temp.ID().equals(ID)) encontrado = true;
 
                 ant = temp;
-                temp = temp.getLink();
+                temp = temp.Link();
             }
 
             if (encontrado) {
-                ant.setLink(ant.getLink());
-                ant.getLink().setLink(null);
+                ant.link = ant.Link();
+                ant.Link().link = null;
 
                 showMessage(ventana, "Caja " + ID + " eliminada correctamente.");
             }
-        } else {
-            showError(ventana, "ERROR", "No existe la caja con el ID: " + ID);
-        }
+        } else showError(ventana, "ERROR", "No existe la caja con el ID: " + ID);
     }
 
     /**
@@ -84,23 +79,18 @@ public class LabBanco {
         Caja nuevaCaja = new Caja(ID, cantDinero, tipoTrans);
 
         if (buscarCaja(ID) == null) {
-            if (ptrCaja == null) {
-                ptrCaja = nuevaCaja;
-            } else {
-                Caja temp = ptrCaja.getLink();
+            if (ptrCaja == null) ptrCaja = nuevaCaja;
+            else {
+                Caja temp = ptrCaja.Link();
                 Caja ant = ptrCaja;
                 while (temp != null) {
                     ant = temp;
-                    temp = temp.getLink();
+                    temp = temp.Link();
                 }
 
-                if (temp == null) {
-                    ant.setLink(nuevaCaja);
-                }
+                if (temp == null) ant.link = nuevaCaja;
             }
-        } else {
-            showError(who, "ERROR", "Ya existe una caja con el mismo código: " + ID);
-        }
+        } else showError(who, "ERROR", "Ya existe una caja con el mismo código: " + ID);
     }
 
     /**
@@ -115,21 +105,36 @@ public class LabBanco {
         Caja temp = ptrCaja;
 
         while (temp != null) {
-            if (temp.getTipoTrans().equals(tipoTrans) && menClientes == null) {
+            if (temp.TipoTrans().equals(tipoTrans) && menClientes == null)
                 menClientes = temp;
-            } else {
-                if (temp.getTipoTrans().equals(tipoTrans) && temp.contarClientes() < menClientes.contarClientes()) {
-                    menClientes = temp;
-                }
-            }
-            temp = temp.getLink();
+            else if (temp.TipoTrans().equals(tipoTrans) && temp.contarClientes() < menClientes.contarClientes())
+                menClientes = temp;
+            temp = temp.Link();
         }
 
         if (menClientes != null) {
             menClientes.agregarCliente(new Cliente(ID, tipoTrans));
-            showError(ventana, "¡Éxito!", "Cliente agregado con éxito. Caja: " + menClientes.getID());
-        } else {
-            showError(ventana, "ERROR", "No hay cajas disponibles con tidpo de transacción: " + tipoTrans);
+            showError(ventana, "¡Éxito!", "Cliente agregado con éxito. Caja: " + menClientes.ID());
+        } else showError(ventana, "ERROR", "No hay cajas disponibles con tidpo de transacción: " + tipoTrans);
+    }
+
+    /**
+     * Despachar Cliente
+     *
+     * @param ID Es el id de la caja en la que se va a despachar el cliente
+     */
+    static public void despacharCliente(String ID) {
+        Caja p = ptrCaja;
+        while (p != null && p.ID().equals(ID) == false)
+            p = p.Link();
+
+        if (p != null) {
+            Cliente r = p.PtrCliente();
+            if (r != null) {
+                p.ptrCliente = p.PtrCliente().rLink;
+                p.ptrCliente.lLink = null;
+                r.rLink = null;
+            } else System.out.println("No hay clientes almacenados");
         }
     }
 
@@ -166,14 +171,13 @@ public class LabBanco {
         Caja temp = ptrCaja;
         while (temp != null) {
             modelo.addRow(new Object[]{
-                temp.getID(),
-                temp.getCantDinero(),
-                temp.getTipoTrans()
+                temp.ID(),
+                temp.CantDinero(),
+                temp.TipoTrans()
             });
 
-            temp = temp.getLink();
+            temp = temp.Link();
         }
-
     }
 
     /**
@@ -185,10 +189,8 @@ public class LabBanco {
     static Caja buscarCaja(String ID) {
         Caja temp = ptrCaja;
         while (temp != null) {
-            if (temp.getID().equals(ID)) {
-                return temp;
-            }
-            temp = temp.getLink();
+            if (temp.ID().equals(ID)) return temp;
+            temp = temp.Link();
         }
         return null;
     }
@@ -205,6 +207,5 @@ public class LabBanco {
         // Abrir ventana de Caja y cerrar la principal
         ventana.setVisible(false);
         ventanaCaja.setVisible(true);
-
     }
 }

@@ -2,11 +2,11 @@ package modelos;
 
 public class Caja {
 
-    private String ID;          // ID de la caja.
-    private long cantDinero;    // Cantidad de dinero inicial de la caja.
-    private String tipoTrans;   // Tipo de transacción que se hará en la caja.
-    private Caja link;          // Enlace de la caja.
-    private Cliente ptrCliente; // PTR de la lista de clientes de la caja.
+    public String ID;          // ID de la caja.
+    public long cantDinero;    // Cantidad de dinero inicial de la caja.
+    public String tipoTrans;   // Tipo de transacción que se hará en la caja.
+    public Caja link;          // Enlace de la caja.
+    public Cliente ptrCliente; // PTR de la lista de clientes de la caja.
 
     /**
      *
@@ -31,15 +31,19 @@ public class Caja {
             Cliente temp = ptrCliente;
             int n = 0;
 
-            while (temp.getrLink() != null) {
+            while (temp.rLink != null) {
                 n++;
-                temp = temp.getrLink();
+                temp = temp.rLink;
             }
 
             return n;
         } catch (Exception e) {
             return 0;
         }
+    }
+
+    public Cliente PtrCliente() {
+        return ptrCliente;
     }
 
     /**
@@ -52,18 +56,18 @@ public class Caja {
         try {
             if (ptrCliente == null) {
                 ptrCliente = Cliente;
-                ptrCliente.setrLink(null);
-                ptrCliente.setlLink(null);
+                ptrCliente.rLink = null;
+                ptrCliente.lLink = null;
             } else {
                 Cliente temp = ptrCliente;
 
-                while (temp.getrLink() != null) {
-                    temp = temp.getrLink();
+                while (temp.rLink != null) {
+                    temp = temp.rLink;
                 }
 
-                if (temp.getrLink() == null) {
-                    temp.setrLink(Cliente);
-                    temp.getrLink().setlLink(temp);
+                if (temp.rLink == null) {
+                    temp.rLink = Cliente;
+                    temp.rLink.lLink = temp;
                 }
             }
             return true;
@@ -71,37 +75,19 @@ public class Caja {
             return false;
         }
     }
-
-    public Caja getLink() {
+    
+    public Caja Link() {
         return link;
     }
 
-    public void setLink(Caja link) {
-        this.link = link;
-    }
-
-    public String getID() {
+    public String ID() {
         return ID;
     }
-
-    public void setID(String ID) {
-        this.ID = ID;
-    }
-
-    public void setTipoTrans(String tipoTrans) {
-        this.tipoTrans = tipoTrans;
-    }
-
-    public long getCantDinero() {
+    public long CantDinero() {
         return cantDinero;
     }
 
-    public String getTipoTrans() {
+    public String TipoTrans() {
         return tipoTrans;
     }
-
-    public void setCantDinero(long cantDinero) {
-        this.cantDinero = cantDinero;
-    }
-
 }
