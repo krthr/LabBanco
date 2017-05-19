@@ -1,5 +1,8 @@
 package modelos;
 
+/**
+ * Nodo caja.
+ */
 public class Caja {
 
     public String ID;          // ID de la caja.
@@ -9,10 +12,11 @@ public class Caja {
     public Cliente ptrCliente; // PTR de la lista de clientes de la caja.
 
     /**
+     * Constructor de Caja.
      *
-     * @param ID
-     * @param cantDinero
-     * @param tipoTrans
+     * @param ID ID de la caja.
+     * @param cantDinero Cantidad de dinero inicial de la caja.
+     * @param tipoTrans Tipo de transacción que se efectuará en la caja.
      */
     public Caja(String ID, long cantDinero, String tipoTrans) {
         this.ID = ID;
@@ -27,21 +31,21 @@ public class Caja {
      * @return El número de clientes en la caja.
      */
     public int contarClientes() {
-        try {
-            Cliente temp = ptrCliente;
-            int n = 0;
+        Cliente temp = ptrCliente;
+        int n = 0;
 
-            while (temp.rLink != null) {
-                n++;
-                temp = temp.rLink;
-            }
-
-            return n;
-        } catch (Exception e) {
-            return 0;
+        while (temp.rLink != null) {
+            n++;
+            temp = temp.rLink;
         }
+
+        return n;
     }
 
+    /**
+     * Obtener el primer elemento de la lista de clientes de la caja.
+     * @return 
+     */
     public Cliente PtrCliente() {
         return ptrCliente;
     }
@@ -75,7 +79,7 @@ public class Caja {
             return false;
         }
     }
-    
+
     public Caja Link() {
         return link;
     }
@@ -83,6 +87,7 @@ public class Caja {
     public String ID() {
         return ID;
     }
+
     public long CantDinero() {
         return cantDinero;
     }

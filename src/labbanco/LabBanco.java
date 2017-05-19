@@ -51,7 +51,9 @@ public class LabBanco {
         if (buscarCaja(ID) != null) {
             boolean encontrado = false;
             while (temp != null && !encontrado) {
-                if (temp.ID().equals(ID)) encontrado = true;
+                if (temp.ID().equals(ID)) {
+                    encontrado = true;
+                }
 
                 ant = temp;
                 temp = temp.Link();
@@ -63,7 +65,9 @@ public class LabBanco {
 
                 showMessage(ventana, "Caja " + ID + " eliminada correctamente.");
             }
-        } else showError(ventana, "ERROR", "No existe la caja con el ID: " + ID);
+        } else {
+            showError(ventana, "ERROR", "No existe la caja con el ID: " + ID);
+        }
     }
 
     /**
@@ -79,8 +83,9 @@ public class LabBanco {
         Caja nuevaCaja = new Caja(ID, cantDinero, tipoTrans);
 
         if (buscarCaja(ID) == null) {
-            if (ptrCaja == null) ptrCaja = nuevaCaja;
-            else {
+            if (ptrCaja == null) {
+                ptrCaja = nuevaCaja;
+            } else {
                 Caja temp = ptrCaja.Link();
                 Caja ant = ptrCaja;
                 while (temp != null) {
@@ -88,9 +93,13 @@ public class LabBanco {
                     temp = temp.Link();
                 }
 
-                if (temp == null) ant.link = nuevaCaja;
+                if (temp == null) {
+                    ant.link = nuevaCaja;
+                }
             }
-        } else showError(who, "ERROR", "Ya existe una caja con el mismo código: " + ID);
+        } else {
+            showError(who, "ERROR", "Ya existe una caja con el mismo código: " + ID);
+        }
     }
 
     /**
@@ -100,22 +109,26 @@ public class LabBanco {
      * @param ID ID del cliente.
      * @param tipoTrans Tipo de transacción que hará el cliente.
      */
+    // TODO Verificar que el cliente no exista
     static public void agregarCliente(JFrame ventana, String ID, String tipoTrans) {
         Caja menClientes = null;
         Caja temp = ptrCaja;
 
         while (temp != null) {
-            if (temp.TipoTrans().equals(tipoTrans) && menClientes == null)
+            if (temp.TipoTrans().equals(tipoTrans) && menClientes == null) {
                 menClientes = temp;
-            else if (temp.TipoTrans().equals(tipoTrans) && temp.contarClientes() < menClientes.contarClientes())
+            } else if (temp.TipoTrans().equals(tipoTrans) && temp.contarClientes() < menClientes.contarClientes()) {
                 menClientes = temp;
+            }
             temp = temp.Link();
         }
 
         if (menClientes != null) {
             menClientes.agregarCliente(new Cliente(ID, tipoTrans));
-            showError(ventana, "¡Éxito!", "Cliente agregado con éxito. Caja: " + menClientes.ID());
-        } else showError(ventana, "ERROR", "No hay cajas disponibles con tidpo de transacción: " + tipoTrans);
+            showMessage(ventana, "Cliente agregado con éxito. Caja: " + menClientes.ID());
+        } else {
+            showError(ventana, "ERROR", "No hay cajas disponibles con tipo de transacción: " + tipoTrans);
+        }
     }
 
     /**
@@ -125,8 +138,9 @@ public class LabBanco {
      */
     static public void despacharCliente(String ID) {
         Caja p = ptrCaja;
-        while (p != null && p.ID().equals(ID) == false)
+        while (p != null && p.ID().equals(ID) == false) {
             p = p.Link();
+        }
 
         if (p != null) {
             Cliente r = p.PtrCliente();
@@ -134,7 +148,10 @@ public class LabBanco {
                 p.ptrCliente = p.PtrCliente().rLink;
                 p.ptrCliente.lLink = null;
                 r.rLink = null;
-            } else System.out.println("No hay clientes almacenados");
+                updateClienteList(vistaPrincipal.clientesLista, p);
+            } else {
+                System.out.println("No hay clientes almacenados");
+            }
         }
     }
 
@@ -160,9 +177,26 @@ public class LabBanco {
     }
 
     /**
+     * Actualizar un jlist de clientes
+     *
+     * @param list Es la JList donde seran cargados los clientes
+     * @param caja Es un apuntador a la caja que tiene los clientes que seran
+     * cargados
+     */
+    public static void updateClienteList(JList list, Caja caja) {
+        list.removeAll();
+        DefaultListModel model = (DefaultListModel) list.getModel();
+        Cliente p = caja.PtrCliente();
+        while (p != null) {
+            model.addElement(p.ID);
+            p = p.lLink;
+        }
+    }
+
+    /**
      * Actualizar tabla de Cajas.
      *
-     * @param table
+     * @param table Tabla donde se muestran la cajas.
      */
     public static void updateCajaTable(JTable table) {
         DefaultTableModel modelo = (DefaultTableModel) table.getModel();
@@ -184,28 +218,47 @@ public class LabBanco {
      * Buscar caja de acuerdo a un ID dado.
      *
      * @param ID
-     * @return true: si existe. false: si no existe.
+     * @return Si la caja fue encontrada devolverá la caja. Si no, retornará
+     * nulo.
      */
     static Caja buscarCaja(String ID) {
         Caja temp = ptrCaja;
         while (temp != null) {
-            if (temp.ID().equals(ID)) return temp;
+            if (temp.ID().equals(ID)) {
+                return temp;
+            }
             temp = temp.Link();
         }
         return null;
     }
 
     /**
+     * Ver ventana con información de una caja.
      *
-     * @param ventana
-     * @param ventanaCaja
-     * @param ID
+     * @param ventana Ventana principal
+     * @param ventanaCaja Ventana con la información de la caja.
+     * @param ID ID de la caja que se mostrará.
      */
     public static void viewCaja(JFrame ventana, JFrame ventanaCaja, String ID) {
-        Caja temp = buscarCaja(ID);
+        Caja temp = buscarCaja(ID); // Obtener la caja que se desea mostrar
 
+        // Actualizar los textos de la ventana con la información de la caja
+        vistaPrincipal.setTextVentanaCaja(temp.ID(), temp.TipoTrans());
+        ventanaCaja.setLocationRelativeTo(null);
         // Abrir ventana de Caja y cerrar la principal
         ventana.setVisible(false);
         ventanaCaja.setVisible(true);
+    }
+
+    /**
+     * Función que se ejecuta cuando se presiona el botón "Atrás".
+     *
+     * @param main Ventana que será mostrada (a la que se volverá)
+     * @param back Ventana que se cerrará
+     */
+    public static void volverAtrás(JFrame main, JFrame back) {
+        back.setVisible(false);
+        main.setLocationRelativeTo(null);
+        main.setVisible(true);
     }
 }

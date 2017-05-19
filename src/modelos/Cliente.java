@@ -1,5 +1,8 @@
 package modelos;
 
+/**
+ * Nodo cliente.
+ */
 public class Cliente {
 
     public String ID;          // ID del cliente.
@@ -10,8 +13,8 @@ public class Cliente {
     /**
      * Constructor de Cliente.
      *
-     * @param ID            Identificación del cliente.
-     * @param tipoTrans     Tipo de transacción que efectuará.
+     * @param ID Identificación del cliente.
+     * @param tipoTrans Tipo de transacción que efectuará.
      */
     public Cliente(String ID, String tipoTrans) {
         this.ID = ID;
@@ -33,6 +36,5 @@ public class Cliente {
     public Cliente getlLink() {
         return lLink;
     }
-    
-    
+
 }
