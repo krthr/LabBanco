@@ -7,6 +7,8 @@ public class Caja {
 
     public String ID;          // ID de la caja.
     public long cantDinero;    // Cantidad de dinero inicial de la caja.
+    public long cantDineroActual; //Cantidad de dinero actual de la caja
+    public int clientesAtendidos; //Clientes atendidos por la caja
     public String tipoTrans;   // Tipo de transacción que se hará en la caja.
     public Caja link;          // Enlace de la caja.
     public Cliente ptrCliente; // PTR de la lista de clientes de la caja.
@@ -22,6 +24,8 @@ public class Caja {
         this.ID = ID;
         this.cantDinero = cantDinero;
         this.tipoTrans = tipoTrans;
+        this.cantDineroActual = cantDinero;
+        this.clientesAtendidos = 0;
     }
 
     /**
@@ -34,7 +38,7 @@ public class Caja {
         Cliente temp = ptrCliente;
         int n = 0;
 
-        while (temp.rLink != null) {
+        while (temp != null) {
             n++;
             temp = temp.rLink;
         }
@@ -43,56 +47,23 @@ public class Caja {
     }
 
     /**
-     * Obtener el primer elemento de la lista de clientes de la caja.
-     * @return 
-     */
-    public Cliente PtrCliente() {
-        return ptrCliente;
-    }
-
-    /**
      * Agregar cliente a la Caja.
      *
      * @param Cliente Cliente que se agregará a la caja.
-     * @return true: si se agregó correctamente. false: si ocurrió algún error.
      */
-    public boolean agregarCliente(Cliente Cliente) {
-        try {
-            if (ptrCliente == null) {
-                ptrCliente = Cliente;
-                ptrCliente.rLink = null;
-                ptrCliente.lLink = null;
-            } else {
-                Cliente temp = ptrCliente;
+    public void agregarCliente(Cliente Cliente) {
+        if (this.ptrCliente == null) {
+            this.ptrCliente = Cliente;
+            this.ptrCliente.rLink = null;
+            this.ptrCliente.lLink = null;
+        } else {
+            Cliente p = this.ptrCliente;
 
-                while (temp.rLink != null) {
-                    temp = temp.rLink;
-                }
-
-                if (temp.rLink == null) {
-                    temp.rLink = Cliente;
-                    temp.rLink.lLink = temp;
-                }
+            while (p.rLink != null) {
+                p = p.rLink;
             }
-            return true;
-        } catch (Exception e) {
-            return false;
+            p.rLink = Cliente;
+            Cliente.lLink = p;
         }
-    }
-
-    public Caja Link() {
-        return link;
-    }
-
-    public String ID() {
-        return ID;
-    }
-
-    public long CantDinero() {
-        return cantDinero;
-    }
-
-    public String TipoTrans() {
-        return tipoTrans;
-    }
+    }   
 }

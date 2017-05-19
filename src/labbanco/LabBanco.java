@@ -45,23 +45,23 @@ public class LabBanco {
      * @param ID Identificador de la caja a eliminar.
      */
     static public void eliminarCaja(JFrame ventana, String ID) {
-        Caja temp = ptrCaja.Link();
+        Caja temp = ptrCaja.link;
         Caja ant = ptrCaja;
 
         if (buscarCaja(ID) != null) {
             boolean encontrado = false;
             while (temp != null && !encontrado) {
-                if (temp.ID().equals(ID)) {
+                if (temp.ID.equals(ID)) {
                     encontrado = true;
                 }
 
                 ant = temp;
-                temp = temp.Link();
+                temp = temp.link;
             }
 
             if (encontrado) {
-                ant.link = ant.Link();
-                ant.Link().link = null;
+                ant.link = null;
+                ant.link.link = null;
 
                 showMessage(ventana, "Caja " + ID + " eliminada correctamente.");
             }
@@ -86,16 +86,13 @@ public class LabBanco {
             if (ptrCaja == null) {
                 ptrCaja = nuevaCaja;
             } else {
-                Caja temp = ptrCaja.Link();
-                Caja ant = ptrCaja;
-                while (temp != null) {
-                    ant = temp;
-                    temp = temp.Link();
+                Caja temp = ptrCaja.link;                
+                while (temp.link != null) {
+                    temp = temp.link;
                 }
 
-                if (temp == null) {
-                    ant.link = nuevaCaja;
-                }
+                temp.link = nuevaCaja;
+                updateCajaTable(vistaPrincipal.cajasTable);
             }
         } else {
             showError(who, "ERROR", "Ya existe una caja con el mismo código: " + ID);
@@ -115,17 +112,35 @@ public class LabBanco {
         Caja temp = ptrCaja;
 
         while (temp != null) {
-            if (temp.TipoTrans().equals(tipoTrans) && menClientes == null) {
+            if (temp.tipoTrans.equals(tipoTrans) && menClientes == null) {
                 menClientes = temp;
-            } else if (temp.TipoTrans().equals(tipoTrans) && temp.contarClientes() < menClientes.contarClientes()) {
+            } else if (temp.tipoTrans.equals(tipoTrans) && temp.contarClientes() < menClientes.contarClientes()) {
                 menClientes = temp;
             }
-            temp = temp.Link();
+            temp = temp.link;
         }
 
         if (menClientes != null) {
-            menClientes.agregarCliente(new Cliente(ID, tipoTrans));
-            showMessage(ventana, "Cliente agregado con éxito. Caja: " + menClientes.ID());
+
+            temp = ptrCaja;
+            Cliente q;
+            while (temp != null) {
+                q = temp.ptrCliente;
+                while (q != null && q.ID.equals(ID) == false) {
+                    q = q.rLink;
+                }
+                if (q != null) {
+                    break;
+                }
+                temp = temp.link;
+            }
+
+            if (temp == null) {
+                menClientes.agregarCliente(new Cliente(ID));
+                showMessage(ventana, "Cliente agregado con éxito. Caja: " + menClientes.ID);
+            } else {
+                showMessage(ventana, "El ID ingresado pertenece a otro cliente.");
+            }
         } else {
             showError(ventana, "ERROR", "No hay cajas disponibles con tipo de transacción: " + tipoTrans);
         }
@@ -134,21 +149,49 @@ public class LabBanco {
     /**
      * Despachar Cliente
      *
-     * @param ID Es el id de la caja en la que se va a despachar el cliente
+     * @param idCaja Es el id de la caja en la que se va a despachar el cliente
      */
-    static public void despacharCliente(String ID) {
+    static public void despacharCliente(String idCaja) {
         Caja p = ptrCaja;
-        while (p != null && p.ID().equals(ID) == false) {
-            p = p.Link();
+        while (p != null && p.ID.equals(idCaja) == false) {
+            p = p.link;
         }
 
         if (p != null) {
-            Cliente r = p.PtrCliente();
+            Cliente r = p.ptrCliente;
             if (r != null) {
-                p.ptrCliente = p.PtrCliente().rLink;
-                p.ptrCliente.lLink = null;
+                double monto = 0;
+                switch (p.tipoTrans) {
+                    case "CONSIGNACIÓN":
+                        p.cantDineroActual += monto;
+                        p.clientesAtendidos++;
+                        break;
+                    case "RETIRO":
+                        int op = 0;
+                        do {
+                            if (p.cantDineroActual >= monto) {
+                                p.cantDineroActual -= monto;
+                                p.clientesAtendidos++;
+                            } else {
+                                showMessage(null, "No hay montos suficientes para realizar retiro.");
+                                op = JOptionPane.showConfirmDialog(null, "Intentar con otro monto?");
+                            }
+                            System.out.println(op); //TODO: mostrar opción de intentar con otro monto en el ciclo
+                        } while (op > 0);
+                        break;
+                    case "PAGO DE SERVICIOS":
+                        p.cantDineroActual += monto;
+                        p.clientesAtendidos++;
+                        break;
+                }
+                p.ptrCliente = p.ptrCliente.rLink;
+                if (r.rLink != null) {
+                    p.ptrCliente.lLink = null;
+                }
+                r.lLink = null;
                 r.rLink = null;
-                updateClienteList(vistaPrincipal.clientesLista, p);
+                updateClienteList(vistaPrincipal.clientesLista, idCaja);
+                updateCajaTable(vistaPrincipal.cajasTable);
             } else {
                 System.out.println("No hay clientes almacenados");
             }
@@ -180,16 +223,21 @@ public class LabBanco {
      * Actualizar un jlist de clientes
      *
      * @param list Es la JList donde seran cargados los clientes
-     * @param caja Es un apuntador a la caja que tiene los clientes que seran
-     * cargados
+     * @param ID Es ID de la caja que tiene los clientes que seran cargados
      */
-    public static void updateClienteList(JList list, Caja caja) {
-        list.removeAll();
-        DefaultListModel model = (DefaultListModel) list.getModel();
-        Cliente p = caja.PtrCliente();
-        while (p != null) {
-            model.addElement(p.ID);
-            p = p.lLink;
+    public static void updateClienteList(JList list, String ID) {
+        Caja q = ptrCaja;
+        while (q != null && q.ID.equals(ID) == false) {
+            q = q.link;
+        }
+        if (q != null) {
+            DefaultListModel model = new DefaultListModel();
+            list.setModel(model);
+            Cliente p = q.ptrCliente;
+            while (p != null) {
+                model.addElement(p.ID);
+                p = p.rLink;
+            }
         }
     }
 
@@ -199,18 +247,52 @@ public class LabBanco {
      * @param table Tabla donde se muestran la cajas.
      */
     public static void updateCajaTable(JTable table) {
-        DefaultTableModel modelo = (DefaultTableModel) table.getModel();
-        modelo.setRowCount(0);
+        DefaultTableModel modelo = new DefaultTableModel();
+        table.setModel(modelo);
+
+        modelo.addColumn("ID");
+        modelo.addColumn("Cant. Dinero");
+        modelo.addColumn("Tipo Transacc.");
 
         Caja temp = ptrCaja;
         while (temp != null) {
             modelo.addRow(new Object[]{
-                temp.ID(),
-                temp.CantDinero(),
-                temp.TipoTrans()
+                temp.ID,
+                temp.cantDinero,
+                temp.tipoTrans
             });
 
-            temp = temp.Link();
+            temp = temp.link;
+        }
+    }
+
+    /**
+     * Actualizar tabla de Estadisticas.
+     *
+     * @param table Tabla donde se muestran las estadisticas.
+     */
+    public static void generarEstadisticas(JTable table) {
+        DefaultTableModel modelo = new DefaultTableModel();
+        table.setModel(modelo);
+        modelo.addColumn("ID");
+        modelo.addColumn("D. Inicial");
+        modelo.addColumn("D. Actual");
+        modelo.addColumn("C. Atendidos");
+        modelo.addColumn("C. Restantes");
+        modelo.addColumn("Tipo T.");
+
+        Caja temp = ptrCaja;
+        while (temp != null) {
+            modelo.addRow(new Object[]{
+                temp.ID,
+                temp.cantDinero,
+                temp.cantDineroActual,
+                temp.clientesAtendidos,
+                temp.contarClientes(),
+                temp.tipoTrans
+            });
+
+            temp = temp.link;
         }
     }
 
@@ -224,10 +306,10 @@ public class LabBanco {
     static Caja buscarCaja(String ID) {
         Caja temp = ptrCaja;
         while (temp != null) {
-            if (temp.ID().equals(ID)) {
+            if (temp.ID.equals(ID)) {
                 return temp;
             }
-            temp = temp.Link();
+            temp = temp.link;
         }
         return null;
     }
@@ -243,7 +325,7 @@ public class LabBanco {
         Caja temp = buscarCaja(ID); // Obtener la caja que se desea mostrar
 
         // Actualizar los textos de la ventana con la información de la caja
-        vistaPrincipal.setTextVentanaCaja(temp.ID(), temp.TipoTrans());
+        vistaPrincipal.setTextVentanaCaja(temp.ID, temp.tipoTrans);
         ventanaCaja.setLocationRelativeTo(null);
         // Abrir ventana de Caja y cerrar la principal
         ventana.setVisible(false);

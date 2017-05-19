@@ -8,6 +8,10 @@ public class vistaPrincipal extends javax.swing.JFrame {
     
     public vistaPrincipal() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        ventanaAñadirCaa.setLocationRelativeTo(null);
+        ventanaAñadirCliente.setLocationRelativeTo(null);
+        ventanaVerCaja.setLocationRelativeTo(null);
     }
     
     @SuppressWarnings("unchecked")
@@ -50,11 +54,11 @@ public class vistaPrincipal extends javax.swing.JFrame {
         eliminarCajaBtn = new javax.swing.JButton();
         añadirCajaBtn = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         ventanaAñadirCaa.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         ventanaAñadirCaa.setTitle("Añadir nueva caja - Banco");
         ventanaAñadirCaa.setMinimumSize(new java.awt.Dimension(271, 253));
-        ventanaAñadirCaa.setPreferredSize(new java.awt.Dimension(271, 253));
         ventanaAñadirCaa.setResizable(false);
 
         jPanel2.setBackground(new java.awt.Color(194, 0, 0));
@@ -146,7 +150,6 @@ public class vistaPrincipal extends javax.swing.JFrame {
         ventanaAñadirCliente.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         ventanaAñadirCliente.setTitle("Añadir nueva caja - Banco");
         ventanaAñadirCliente.setMinimumSize(new java.awt.Dimension(271, 233));
-        ventanaAñadirCliente.setPreferredSize(new java.awt.Dimension(271, 233));
         ventanaAñadirCliente.setResizable(false);
 
         jPanel3.setBackground(new java.awt.Color(194, 0, 0));
@@ -182,6 +185,11 @@ public class vistaPrincipal extends javax.swing.JFrame {
         jLabel7.setText("ID");
 
         selTipoTrans1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CONSIGNACIÓN", "RETIRO", "PAGO DE SERVICIOS" }));
+        selTipoTrans1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selTipoTrans1ActionPerformed(evt);
+            }
+        });
 
         jLabel8.setText("Tipo de transacción");
 
@@ -225,7 +233,6 @@ public class vistaPrincipal extends javax.swing.JFrame {
         ventanaVerCaja.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         ventanaVerCaja.setTitle("Banco - Laboratorio");
         ventanaVerCaja.setAlwaysOnTop(true);
-        ventanaVerCaja.setMaximumSize(new java.awt.Dimension(385, 430));
         ventanaVerCaja.setMinimumSize(new java.awt.Dimension(385, 430));
         ventanaVerCaja.setResizable(false);
 
@@ -348,6 +355,7 @@ public class vistaPrincipal extends javax.swing.JFrame {
         );
 
         verCajaBtn.setText("Ver");
+        verCajaBtn.setToolTipText("Presione para ver la caja seleccionada");
         verCajaBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 verCajaBtnActionPerformed(evt);
@@ -381,6 +389,7 @@ public class vistaPrincipal extends javax.swing.JFrame {
         jScrollPane1.setViewportView(cajasTable);
 
         añadirClienteBtn.setText("Añadir cliente");
+        añadirClienteBtn.setToolTipText("Presione para añadir un cliente");
         añadirClienteBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 añadirClienteBtnActionPerformed(evt);
@@ -388,6 +397,7 @@ public class vistaPrincipal extends javax.swing.JFrame {
         });
 
         eliminarCajaBtn.setText("Eliminar");
+        eliminarCajaBtn.setToolTipText("Presione para eliminar la caja seleccionada");
         eliminarCajaBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 eliminarCajaBtnActionPerformed(evt);
@@ -395,13 +405,27 @@ public class vistaPrincipal extends javax.swing.JFrame {
         });
 
         añadirCajaBtn.setText("Añadir caja");
+        añadirCajaBtn.setToolTipText("Presione para añadir una caja");
         añadirCajaBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 añadirCajaBtnActionPerformed(evt);
             }
         });
 
-        jButton1.setText("Estadística");
+        jButton1.setText("Ver estadísticas");
+        jButton1.setToolTipText("");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Ocult. estadisticas");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -412,14 +436,15 @@ public class vistaPrincipal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(añadirCajaBtn)
-                        .addGap(18, 18, 18)
+                        .addComponent(añadirCajaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(añadirClienteBtn)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 475, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(eliminarCajaBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(verCajaBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -428,19 +453,21 @@ public class vistaPrincipal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(añadirClienteBtn)
                     .addComponent(añadirCajaBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(verCajaBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(eliminarCajaBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 129, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(22, 22, 22))
         );
 
@@ -468,9 +495,6 @@ public class vistaPrincipal extends javax.swing.JFrame {
     private void guardarCajaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarCajaBtnActionPerformed
         if (idText.getText().length() > 0) {
             LabBanco.agregarCaja(this, idText.getText(), selTipoTrans.getSelectedItem().toString(), Integer.parseInt(cantDinero.getValue() + ""));
-            LabBanco.updateCajaTable(cajasTable);
-            
-            LabBanco.showMessage(this, "Caja agregada con éxito.");
             
             this.setVisible(true);
             ventanaAñadirCaa.setVisible(false);
@@ -500,6 +524,7 @@ public class vistaPrincipal extends javax.swing.JFrame {
         if (cajasTable.getSelectedRow() != -1) {
             DefaultTableModel modelo = (DefaultTableModel) cajasTable.getModel();
             LabBanco.viewCaja(this, ventanaVerCaja, modelo.getValueAt(cajasTable.getSelectedRow(), 0).toString());
+            LabBanco.updateClienteList(clientesLista, modelo.getValueAt(cajasTable.getSelectedRow(), 0).toString());
         } else {
             LabBanco.showError(this, "ERROR", "No ha seleccionado ninguna caja.");
         }
@@ -517,6 +542,8 @@ public class vistaPrincipal extends javax.swing.JFrame {
         
         idTextCliente.setText("");
         selTipoTrans1.setSelectedIndex(0);
+        
+        LabBanco.updateCajaTable(cajasTable);
     }//GEN-LAST:event_guardarCajaBtn1ActionPerformed
 
     /**
@@ -530,12 +557,24 @@ public class vistaPrincipal extends javax.swing.JFrame {
     }
     
     private void despacharClienteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_despacharClienteBtnActionPerformed
-        // TODO add your handling code here:
+        LabBanco.despacharCliente(txtIDCaja.getText().substring(4, txtIDCaja.getText().length()));
     }//GEN-LAST:event_despacharClienteBtnActionPerformed
 
     private void volverBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverBtnActionPerformed
         LabBanco.volverAtrás(this, ventanaVerCaja);
     }//GEN-LAST:event_volverBtnActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        LabBanco.generarEstadisticas(cajasTable);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void selTipoTrans1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selTipoTrans1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_selTipoTrans1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        LabBanco.updateCajaTable(cajasTable);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -570,7 +609,7 @@ public class vistaPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton añadirCajaBtn;
     private javax.swing.JButton añadirClienteBtn;
-    private javax.swing.JTable cajasTable;
+    public static javax.swing.JTable cajasTable;
     private javax.swing.JSpinner cantDinero;
     public static javax.swing.JList<String> clientesLista;
     private javax.swing.JButton despacharClienteBtn;
@@ -580,6 +619,7 @@ public class vistaPrincipal extends javax.swing.JFrame {
     private javax.swing.JTextField idText;
     private javax.swing.JTextField idTextCliente;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
