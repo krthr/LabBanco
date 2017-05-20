@@ -15,6 +15,6 @@ public class Cliente {
      * @param ID Identificación del cliente.
      */
     public Cliente(String ID) {
-        this.ID = ID;        
-    }    
+        this.ID = ID;
+    }
 }

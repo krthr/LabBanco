@@ -266,12 +266,9 @@ public class vistaPrincipal extends javax.swing.JFrame {
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addComponent(txtIDCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addComponent(txtTipoTrans, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                    .addComponent(txtTipoTrans, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtIDCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -540,9 +537,9 @@ public class vistaPrincipal extends javax.swing.JFrame {
      * (Botón) Añadir nuevo cliente.
      */
     private void añadirClienteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_añadirClienteBtnActionPerformed
-        if (LabBanco.getPtrCaja() == null)
+        if (LabBanco.getPtrCaja() == null) {
             LabBanco.showError(this, "ERROR", "No ha agregado cajas a la lista.");
-        else {
+        } else {
             this.setVisible(false);
             ventanaAñadirCliente.setVisible(true);
         }
@@ -563,8 +560,9 @@ public class vistaPrincipal extends javax.swing.JFrame {
             selTipoTrans.setSelectedIndex(0);
 
             LabBanco.updateCajaTable(cajasTable);
-        } else
+        } else {
             LabBanco.showError(this, "ERROR", "Por favor, escriba el ID de la caja.");
+        }
     }//GEN-LAST:event_guardarCajaBtnActionPerformed
 
     /**
@@ -583,24 +581,25 @@ public class vistaPrincipal extends javax.swing.JFrame {
             DefaultTableModel modelo = (DefaultTableModel) cajasTable.getModel();
             LabBanco.viewCaja(this, ventanaVerCaja, modelo.getValueAt(cajasTable.getSelectedRow(), 0).toString());
             LabBanco.updateClienteList(clientesLista, modelo.getValueAt(cajasTable.getSelectedRow(), 0).toString());
-        } else
+        } else {
             LabBanco.showError(this, "ERROR", "No ha seleccionado ninguna caja.");
+        }
     }//GEN-LAST:event_verCajaBtnActionPerformed
 
     /**
-     * 
+     * (Botón)
      */
     private void eliminarCajaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarCajaBtnActionPerformed
-        if (cajasTable.getSelectedRow() < 0)
+        if (cajasTable.getSelectedRow() < 0) {
             LabBanco.showError(this, "¡ERROR!", "No ha selecciona ninguna caja para eliminar.");
-        else {
+        } else {
             LabBanco.eliminarCaja(this, cajasTable.getModel().getValueAt(cajasTable.getSelectedRow(), 0).toString());
             LabBanco.updateCajaTable(cajasTable);
         }
     }//GEN-LAST:event_eliminarCajaBtnActionPerformed
 
     /**
-     * 
+     * (Botón)
      */
     private void guardarCajaBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarCajaBtn1ActionPerformed
         LabBanco.agregarCliente(this, idTextCliente.getText(), selTipoTrans1.getSelectedItem().toString());
@@ -615,9 +614,11 @@ public class vistaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_guardarCajaBtn1ActionPerformed
 
     /**
+     * Actualizar textos de la ventana ver caja con la información de la caja a
+     * mostrar.
      *
-     * @param idCaja
-     * @param tipoTrans
+     * @param idCaja ID de la caja.
+     * @param tipoTrans Tipo de transacción de la caja.
      */
     public static void setTextVentanaCaja(String idCaja, String tipoTrans) {
         txtIDCaja.setText("ID: " + idCaja);
@@ -625,25 +626,26 @@ public class vistaPrincipal extends javax.swing.JFrame {
     }
 
     /**
-     * 
+     *
      */
     private void despacharClienteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_despacharClienteBtnActionPerformed
         if (clientesLista.getModel().getSize() > 0) {
             ventanaVerCaja.setVisible(false);
             ventanaMontoTransacción.setVisible(true);
-        } else
+        } else {
             LabBanco.showError(ventanaVerCaja, "Oops", "No hay clientes por atender.");
+        }
     }//GEN-LAST:event_despacharClienteBtnActionPerformed
 
     /**
-     * 
+     *
      */
     private void volverBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverBtnActionPerformed
         LabBanco.volverAtrás(this, ventanaVerCaja);
     }//GEN-LAST:event_volverBtnActionPerformed
 
     /**
-     * 
+     *
      */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         LabBanco.generarEstadisticas(cajasTable);
@@ -653,12 +655,15 @@ public class vistaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_selTipoTrans1ActionPerformed
 
     /**
-     * 
+     *
      */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         LabBanco.updateCajaTable(cajasTable);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    /**
+     *
+     */
     private void realizarTransaccionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_realizarTransaccionBtnActionPerformed
         LabBanco.despacharCliente(txtIDCaja.getText().substring(4, txtIDCaja.getText().length()), Long.parseLong(montoTransaccion.getValue().toString()));
         montoTransaccion.setValue(0);

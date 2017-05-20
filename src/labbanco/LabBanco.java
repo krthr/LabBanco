@@ -148,6 +148,8 @@ public class LabBanco {
      */
     static public void despacharCliente(String idCaja, long monto) {
         Caja p = ptrCaja;
+        int op = JOptionPane.CANCEL_OPTION;
+
         while (p != null && p.ID.equals(idCaja) == false) {
             p = p.link;
         }
@@ -161,7 +163,6 @@ public class LabBanco {
                         p.clientesAtendidos++;
                         break;
                     case "RETIRO":
-                        int op = JOptionPane.CANCEL_OPTION;
                         if (p.cantDineroActual >= monto) {
                             p.cantDineroActual -= monto;
                             p.clientesAtendidos++;
@@ -175,15 +176,17 @@ public class LabBanco {
                         p.clientesAtendidos++;
                         break;
                 }
-                p.ptrCliente = p.ptrCliente.rLink;
-                if (r.rLink != null) {
-                    p.ptrCliente.lLink = null;
-                }
+                if (op == JOptionPane.CANCEL_OPTION) {
+                    p.ptrCliente = p.ptrCliente.rLink;
+                    if (r.rLink != null) {
+                        p.ptrCliente.lLink = null;
+                    }
 
-                r.lLink = null;
-                r.rLink = null;
-                updateClienteList(vistaPrincipal.clientesLista, idCaja);
-                updateCajaTable(vistaPrincipal.cajasTable);
+                    r.lLink = null;
+                    r.rLink = null;
+                    updateClienteList(vistaPrincipal.clientesLista, idCaja);
+                    updateCajaTable(vistaPrincipal.cajasTable);
+                }
             } else {
                 System.out.println("No hay clientes almacenados");
             }
@@ -240,7 +243,12 @@ public class LabBanco {
      * @param table Tabla donde se muestran la cajas.
      */
     public static void updateCajaTable(JTable table) {
-        DefaultTableModel modelo = new DefaultTableModel();
+        DefaultTableModel modelo = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         table.setModel(modelo);
 
         modelo.addColumn("ID");
@@ -251,7 +259,7 @@ public class LabBanco {
         while (temp != null) {
             modelo.addRow(new Object[]{
                 temp.ID,
-                temp.cantDinero,
+                temp.cantDineroActual,
                 temp.tipoTrans
             });
 
@@ -265,7 +273,12 @@ public class LabBanco {
      * @param table Tabla donde se muestran las estadisticas.
      */
     public static void generarEstadisticas(JTable table) {
-        DefaultTableModel modelo = new DefaultTableModel();
+        DefaultTableModel modelo = new DefaultTableModel(){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         table.setModel(modelo);
         modelo.addColumn("ID");
         modelo.addColumn("D. Inicial");
