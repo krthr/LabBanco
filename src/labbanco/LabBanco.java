@@ -8,18 +8,14 @@ import vistas.*;
 
 public class LabBanco {
 
-    public static Caja ptrCaja;        // Primer elemento de la lista de cajas.
-
-    public static Caja getPtrCaja() {
-        return ptrCaja;
-    }
+    public static Caja ptrCaja;        // Primer elemento de la lista de cajas.    
 
     /**
      * Obtener el primer elemento de la lista de Cajas.
      *
      * @return
      */
-    public static Caja PtrCaja() {
+    public static Caja getPtrCaja() {
         return ptrCaja;
     }
 
@@ -45,24 +41,22 @@ public class LabBanco {
      * @param ID Identificador de la caja a eliminar.
      */
     static public void eliminarCaja(JFrame ventana, String ID) {
-        Caja temp = ptrCaja.link;
-        Caja ant = ptrCaja;
+        Caja ant = null;
+        Caja temp = ptrCaja;
 
         if (buscarCaja(ID) != null) {
-            boolean encontrado = false;
-            while (temp != null && !encontrado) {
-                if (temp.ID.equals(ID)) {
-                    encontrado = true;
-                }
-
+            while (temp != null && temp.ID.equals(ID) == false) {
                 ant = temp;
                 temp = temp.link;
             }
 
-            if (encontrado) {
-                ant.link = null;
-                ant.link.link = null;
-
+            if (temp != null) {//Si temp no es nulo es porque encontró la caja
+                if (temp == ptrCaja) {
+                    ptrCaja = ptrCaja.link;
+                } else {
+                    ant.link = temp.link;
+                }
+                temp.link = null;
                 showMessage(ventana, "Caja " + ID + " eliminada correctamente.");
             }
         } else {
@@ -86,14 +80,15 @@ public class LabBanco {
             if (ptrCaja == null) {
                 ptrCaja = nuevaCaja;
             } else {
-                Caja temp = ptrCaja.link;                
+                Caja temp = ptrCaja;
                 while (temp.link != null) {
                     temp = temp.link;
                 }
 
                 temp.link = nuevaCaja;
-                updateCajaTable(vistaPrincipal.cajasTable);
             }
+
+            // updateCajaTable(vistaPrincipal.cajasTable);
         } else {
             showError(who, "ERROR", "Ya existe una caja con el mismo código: " + ID);
         }
@@ -151,7 +146,7 @@ public class LabBanco {
      *
      * @param idCaja Es el id de la caja en la que se va a despachar el cliente
      */
-    static public void despacharCliente(String idCaja) {
+    static public void despacharCliente(String idCaja, long monto) {
         Caja p = ptrCaja;
         while (p != null && p.ID.equals(idCaja) == false) {
             p = p.link;
@@ -160,24 +155,20 @@ public class LabBanco {
         if (p != null) {
             Cliente r = p.ptrCliente;
             if (r != null) {
-                double monto = 0;
                 switch (p.tipoTrans) {
                     case "CONSIGNACIÓN":
                         p.cantDineroActual += monto;
                         p.clientesAtendidos++;
                         break;
                     case "RETIRO":
-                        int op = 0;
-                        do {
-                            if (p.cantDineroActual >= monto) {
-                                p.cantDineroActual -= monto;
-                                p.clientesAtendidos++;
-                            } else {
-                                showMessage(null, "No hay montos suficientes para realizar retiro.");
-                                op = JOptionPane.showConfirmDialog(null, "Intentar con otro monto?");
-                            }
-                            System.out.println(op); //TODO: mostrar opción de intentar con otro monto en el ciclo
-                        } while (op > 0);
+                        int op = JOptionPane.CANCEL_OPTION;
+                        if (p.cantDineroActual >= monto) {
+                            p.cantDineroActual -= monto;
+                            p.clientesAtendidos++;
+                        } else {
+                            showMessage(null, "No hay montos suficientes para realizar retiro.");
+                            op = JOptionPane.showConfirmDialog(null, "Intentar con otro monto?");
+                        }
                         break;
                     case "PAGO DE SERVICIOS":
                         p.cantDineroActual += monto;
@@ -188,6 +179,7 @@ public class LabBanco {
                 if (r.rLink != null) {
                     p.ptrCliente.lLink = null;
                 }
+
                 r.lLink = null;
                 r.rLink = null;
                 updateClienteList(vistaPrincipal.clientesLista, idCaja);
@@ -230,6 +222,7 @@ public class LabBanco {
         while (q != null && q.ID.equals(ID) == false) {
             q = q.link;
         }
+
         if (q != null) {
             DefaultListModel model = new DefaultListModel();
             list.setModel(model);
@@ -309,6 +302,7 @@ public class LabBanco {
             if (temp.ID.equals(ID)) {
                 return temp;
             }
+
             temp = temp.link;
         }
         return null;
