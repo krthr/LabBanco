@@ -466,7 +466,7 @@
     <Container class="javax.swing.JFrame" name="ventanaMontoTransacci&#xf3;n">
       <Properties>
         <Property name="defaultCloseOperation" type="int" value="0"/>
-        <Property name="title" type="java.lang.String" value="A&#xf1;adir nueva caja - Banco"/>
+        <Property name="title" type="java.lang.String" value="Digitar monto transacci&#xf3;n - Banco"/>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[271, 163]"/>
         </Property>
@@ -547,6 +547,11 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JSpinner" name="montoTransaccion">
+          <Properties>
+            <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+              <SpinnerModel initial="0" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
+            </Property>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

@@ -329,7 +329,7 @@ public class vistaPrincipal extends javax.swing.JFrame {
         );
 
         ventanaMontoTransacción.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        ventanaMontoTransacción.setTitle("Añadir nueva caja - Banco");
+        ventanaMontoTransacción.setTitle("Digitar monto transacción - Banco");
         ventanaMontoTransacción.setMaximumSize(new java.awt.Dimension(271, 163));
         ventanaMontoTransacción.setMinimumSize(new java.awt.Dimension(271, 163));
         ventanaMontoTransacción.setResizable(false);
@@ -356,6 +356,8 @@ public class vistaPrincipal extends javax.swing.JFrame {
         });
 
         jLabel11.setText("Monto de la transacción");
+
+        montoTransaccion.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
 
         javax.swing.GroupLayout ventanaMontoTransacciónLayout = new javax.swing.GroupLayout(ventanaMontoTransacción.getContentPane());
         ventanaMontoTransacción.getContentPane().setLayout(ventanaMontoTransacciónLayout);
@@ -602,15 +604,19 @@ public class vistaPrincipal extends javax.swing.JFrame {
      * (Botón)
      */
     private void guardarCajaBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarCajaBtn1ActionPerformed
-        LabBanco.agregarCliente(this, idTextCliente.getText(), selTipoTrans1.getSelectedItem().toString());
+        if (idTextCliente.getText().length() > 0) {
+            LabBanco.agregarCliente(this, idTextCliente.getText(), selTipoTrans1.getSelectedItem().toString());
 
-        this.setVisible(true);
-        ventanaAñadirCliente.setVisible(false);
+            this.setVisible(true);
+            ventanaAñadirCliente.setVisible(false);
 
-        idTextCliente.setText("");
-        selTipoTrans1.setSelectedIndex(0);
+            idTextCliente.setText("");
+            selTipoTrans1.setSelectedIndex(0);
 
-        LabBanco.updateCajaTable(cajasTable);
+            LabBanco.updateCajaTable(cajasTable);
+        } else {
+            LabBanco.showError(this, "ERROR", "Por favor, escriba el ID del cliente.");
+        }
     }//GEN-LAST:event_guardarCajaBtn1ActionPerformed
 
     /**

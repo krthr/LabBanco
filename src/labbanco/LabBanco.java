@@ -116,7 +116,6 @@ public class LabBanco {
         }
 
         if (menClientes != null) {
-
             temp = ptrCaja;
             Cliente q;
             while (temp != null) {
@@ -148,7 +147,7 @@ public class LabBanco {
      */
     static public void despacharCliente(String idCaja, long monto) {
         Caja p = ptrCaja;
-        int op = JOptionPane.CANCEL_OPTION;
+        int op = 1; //Cancelar 1, Aceptar 0
 
         while (p != null && p.ID.equals(idCaja) == false) {
             p = p.link;
@@ -169,6 +168,9 @@ public class LabBanco {
                         } else {
                             showMessage(null, "No hay montos suficientes para realizar retiro.");
                             op = JOptionPane.showConfirmDialog(null, "Intentar con otro monto?");
+                            if(op == 1){
+                                p.clientesAtendidos++;
+                            }
                         }
                         break;
                     case "PAGO DE SERVICIOS":
@@ -176,10 +178,12 @@ public class LabBanco {
                         p.clientesAtendidos++;
                         break;
                 }
-                if (op == JOptionPane.CANCEL_OPTION) {
+                if (op == 1) {// //Cancelar 1, Aceptar 0
                     p.ptrCliente = p.ptrCliente.rLink;
                     if (r.rLink != null) {
                         p.ptrCliente.lLink = null;
+                    }else{
+                        p.ptrCliente = null;
                     }
 
                     r.lLink = null;
