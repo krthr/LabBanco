@@ -28,6 +28,12 @@ public class Caja {
         this.clientesAtendidos = 0;
     }
 
+    @Override
+    public String toString() {
+        return "Caja{" + "ID=" + ID + ", cantDinero=" + cantDinero + ", cantDineroActual=" + cantDineroActual + ", clientesAtendidos=" + clientesAtendidos + ", clientesRestantes="+ this.contarClientes() + ", tipoTrans=" + tipoTrans + '}';
+    }    
+    
+    
     /**
      * Contar el número de clientes que están en la lista de clientes (falta por
      * atender).

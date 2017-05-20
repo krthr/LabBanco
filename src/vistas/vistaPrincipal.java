@@ -3,6 +3,7 @@ package vistas;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import labbanco.LabBanco;
+import modelos.Caja;
 
 public class vistaPrincipal extends javax.swing.JFrame {
 
@@ -655,6 +656,11 @@ public class vistaPrincipal extends javax.swing.JFrame {
      */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         LabBanco.generarEstadisticas(cajasTable);
+        Caja q = LabBanco.ptrCaja; 
+        while (q != null) {            
+            System.out.println(q.toString());
+            q = q.link;
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void selTipoTrans1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selTipoTrans1ActionPerformed
