@@ -168,7 +168,7 @@ public class LabBanco {
                         } else {
                             showMessage(null, "No hay montos suficientes para realizar retiro.");
                             op = JOptionPane.showConfirmDialog(null, "Intentar con otro monto?");
-                            if(op == 1){
+                            if (op == 1) {
                                 p.clientesAtendidos++;
                             }
                         }
@@ -182,7 +182,7 @@ public class LabBanco {
                     p.ptrCliente = p.ptrCliente.rLink;
                     if (r.rLink != null) {
                         p.ptrCliente.lLink = null;
-                    }else{
+                    } else {
                         p.ptrCliente = null;
                     }
 
@@ -277,7 +277,7 @@ public class LabBanco {
      * @param table Tabla donde se muestran las estadisticas.
      */
     public static void generarEstadisticas(JTable table) {
-        DefaultTableModel modelo = new DefaultTableModel(){
+        DefaultTableModel modelo = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -353,5 +353,42 @@ public class LabBanco {
         back.setVisible(false);
         main.setLocationRelativeTo(null);
         main.setVisible(true);
+    }
+
+    /**
+     * Calcular la cantidad total hasta el momento en las cajas.
+     * @return 
+     */
+    public static long generateTotal() {
+        long total = 0;
+        Caja temp = ptrCaja;
+
+        while (temp != null) {
+            if (temp.tipoTrans.equals("RETIRO")) {
+                total += (temp.cantDinero - (temp.cantDinero - temp.cantDineroActual));
+            } else {
+                total += temp.cantDineroActual;
+            }
+            
+            temp = temp.link;
+        }
+        
+        return total;
+    }
+
+    /**
+     * Calcular la cantidad total de dinero inicial en las cajas.
+     * @return 
+     */
+    public static long generateInitialTotal() {
+        long total = 0;
+        Caja temp = ptrCaja;
+        
+        while (temp != null) {
+            total += temp.cantDinero;
+            temp = temp.link;
+        }
+        
+        return total;
     }
 }

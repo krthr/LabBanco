@@ -2,6 +2,7 @@ package vistas;
 
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
+import static javax.swing.JOptionPane.showMessageDialog;
 import labbanco.LabBanco;
 import modelos.Caja;
 
@@ -62,6 +63,7 @@ public class vistaPrincipal extends javax.swing.JFrame {
         añadirCajaBtn = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        btnVerDia = new javax.swing.JButton();
 
         ventanaAñadirCaa.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         ventanaAñadirCaa.setTitle("Añadir nueva caja - Banco");
@@ -331,7 +333,6 @@ public class vistaPrincipal extends javax.swing.JFrame {
 
         ventanaMontoTransacción.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         ventanaMontoTransacción.setTitle("Digitar monto transacción - Banco");
-        ventanaMontoTransacción.setMaximumSize(new java.awt.Dimension(271, 163));
         ventanaMontoTransacción.setMinimumSize(new java.awt.Dimension(271, 163));
         ventanaMontoTransacción.setResizable(false);
         ventanaMontoTransacción.setSize(new java.awt.Dimension(271, 163));
@@ -489,6 +490,13 @@ public class vistaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        btnVerDia.setText("Ver día");
+        btnVerDia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerDiaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -508,7 +516,8 @@ public class vistaPrincipal extends javax.swing.JFrame {
                     .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(eliminarCajaBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(verCajaBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(verCajaBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnVerDia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -525,7 +534,9 @@ public class vistaPrincipal extends javax.swing.JFrame {
                         .addComponent(verCajaBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(eliminarCajaBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 129, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
+                        .addComponent(btnVerDia)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -683,6 +694,10 @@ public class vistaPrincipal extends javax.swing.JFrame {
         ventanaVerCaja.setVisible(true);
     }//GEN-LAST:event_realizarTransaccionBtnActionPerformed
 
+    private void btnVerDiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerDiaActionPerformed
+        LabBanco.showMessage(this, "TOTAL INICIAL: " + LabBanco.generateInitialTotal() + "\n" + "TOTAL FINAL: " + LabBanco.generateTotal());
+    }//GEN-LAST:event_btnVerDiaActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -713,6 +728,7 @@ public class vistaPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton añadirCajaBtn;
     private javax.swing.JButton añadirClienteBtn;
+    private javax.swing.JButton btnVerDia;
     public static javax.swing.JTable cajasTable;
     private javax.swing.JSpinner cantDinero;
     public static javax.swing.JList<String> clientesLista;
