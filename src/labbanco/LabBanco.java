@@ -357,38 +357,36 @@ public class LabBanco {
 
     /**
      * Calcular la cantidad total hasta el momento en las cajas.
-     * @return 
+     *
+     * @return
      */
     public static long generateTotal() {
         long total = 0;
         Caja temp = ptrCaja;
 
         while (temp != null) {
-            if (temp.tipoTrans.equals("RETIRO")) {
-                total += (temp.cantDinero - (temp.cantDinero - temp.cantDineroActual));
-            } else {
-                total += temp.cantDineroActual;
-            }
-            
+            total += temp.cantDineroActual;
+
             temp = temp.link;
         }
-        
+
         return total;
     }
 
     /**
      * Calcular la cantidad total de dinero inicial en las cajas.
-     * @return 
+     *
+     * @return
      */
     public static long generateInitialTotal() {
         long total = 0;
         Caja temp = ptrCaja;
-        
+
         while (temp != null) {
             total += temp.cantDinero;
             temp = temp.link;
         }
-        
+
         return total;
     }
 }
